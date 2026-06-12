@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -49,10 +50,13 @@ export default function Nav() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:h-20 md:px-10">
           <Link
             href="/"
-            className="font-display text-xl tracking-tight text-ivory md:text-2xl"
+            className="flex items-center gap-2.5 font-display text-xl tracking-tight text-ivory md:text-2xl"
           >
-            <span className="text-gold">Biryani</span>
-            <span className="text-ivory">Recipes</span>
+            <Logo size={28} />
+            <span>
+              <span className="text-gold">Biryani</span>
+              <span className="text-ivory">Recipes</span>
+            </span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8">
@@ -131,8 +135,9 @@ export default function Nav() {
               }}
             >
               <div className="flex items-center justify-between">
-                <span className="font-display text-lg text-ivory">
-                  <span className="text-gold">Biryani</span>Recipes
+                <span className="flex items-center gap-2 font-display text-lg text-ivory">
+                  <Logo size={24} />
+                  <span><span className="text-gold">Biryani</span>Recipes</span>
                 </span>
                 <button
                   type="button"
