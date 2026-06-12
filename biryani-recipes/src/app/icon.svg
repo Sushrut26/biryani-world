@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background tile -->
+  <rect width="32" height="32" rx="7" fill="#08070A"/>
+  <!-- Knob -->
+  <circle cx="16" cy="6.5" r="1.8" fill="#C8952A"/>
+  <!-- Lid -->
+  <ellipse cx="16" cy="10.5" rx="8" ry="2.8" fill="#C8952A"/>
+  <!-- Dough seal band -->
+  <rect x="7.5" y="12.5" width="17" height="2.2" rx="1.1" fill="#C8952A" opacity="0.55"/>
+  <!-- Pot body: narrow mouth, wide belly, rounded base -->
+  <path d="M9 14.7 C7.2 18 6 22.5 6.5 27 C7 30.5 11 33 16 33 C21 33 25 30.5 25.5 27 C26 22.5 24.8 18 23 14.7 Z" fill="#C8952A"/>
+</svg>
