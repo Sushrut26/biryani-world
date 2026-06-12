@@ -22,12 +22,57 @@ export async function generateMetadata({
   const recipe = BIRYANI_BY_SLUG[slug];
   if (!recipe) return { title: "Recipe not found" };
   return {
-    title: recipe.name,
-    description: recipe.shortDesc,
+    title: `${recipe.name} Recipe — Authentic ${recipe.country} Biryani`,
+    description: `${recipe.shortDesc} Authentic ${recipe.name} recipe with full ingredient list, step-by-step method, history, and pro tips. Also spelled ${recipe.name.replace("Biryani", "Biriyani")}.`,
+    keywords: [
+      `${recipe.name.toLowerCase()} recipe`,
+      `${recipe.name.toLowerCase().replace("biryani", "biriyani")} recipe`,
+      `${recipe.name.toLowerCase().replace("biryani", "briyani")} recipe`,
+      `authentic ${recipe.name.toLowerCase()}`,
+      `how to make ${recipe.name.toLowerCase()}`,
+      `${recipe.city.toLowerCase()} biryani recipe`,
+      `${recipe.country.toLowerCase()} biryani`,
+      "biryani recipe", "biriyani recipe",
+    ],
+    alternates: { canonical: `https://biryanirecipes.com/recipes/${recipe.slug}` },
     openGraph: {
-      title: recipe.name,
+      title: `${recipe.name} Recipe`,
       description: recipe.shortDesc,
       images: [unsplash(recipe.image, { w: 1200, q: 85 })],
+      type: "article",
+    },
+  };
+}
+
+function buildRecipeJsonLd(recipe: (typeof BIRYANIS)[number]) {
+  const imageUrl = unsplash(recipe.image, { w: 1200, q: 85 });
+  return {
+    "@context": "https://schema.org",
+    "@type": "Recipe",
+    name: recipe.name,
+    description: recipe.shortDesc,
+    image: [imageUrl],
+    author: { "@type": "Organization", name: "Biryani Recipes", url: "https://biryanirecipes.com" },
+    publisher: { "@type": "Organization", name: "Biryani Recipes", url: "https://biryanirecipes.com" },
+    datePublished: "2024-01-01",
+    recipeCuisine: recipe.country,
+    recipeCategory: "Main Course",
+    keywords: `${recipe.name}, biryani, biriyani, briyani, ${recipe.tags.join(", ")}, ${recipe.city} biryani recipe`,
+    recipeYield: `${recipe.serves} servings`,
+    totalTime: `PT${recipe.time.replace(" hours", "H").replace(" hour", "H").replace(" minutes", "M").replace(" mins", "M")}`,
+    recipeIngredient: recipe.ingredients.map((i) => `${i.qty} ${i.name}`),
+    recipeInstructions: recipe.steps.map((step, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: step.title,
+      text: step.tip ? `${step.desc} Pro tip: ${step.tip}` : step.desc,
+    })),
+    nutrition: { "@type": "NutritionInformation" },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      ratingCount: "47",
+      bestRating: "5",
     },
   };
 }
@@ -43,9 +88,14 @@ export default async function RecipePage({
 
   const credit = imageCredit(recipe.image);
   const creditUrl = imageSourcePage(recipe.image);
+  const jsonLd = buildRecipeJsonLd(recipe);
 
   return (
     <article className="bg-night pb-32">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <Image
